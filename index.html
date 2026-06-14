@@ -126,7 +126,7 @@ header p {
 .imagem img {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
     cursor: zoom-in;
 }
 
@@ -213,6 +213,45 @@ footer {
     font-size: 13px;
 }
 
+    .contato {
+    background: #ffffff;
+    text-align: center;
+    padding: 60px 20px;
+    border-top: 1px solid #dddddd;
+}
+
+.contato-foto {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    margin-bottom: 16px;
+}
+
+.contato h2 {
+    margin: 0 0 12px 0;
+    font-size: 28px;
+    font-weight: 500;
+}
+
+.contato p {
+    margin: 0 0 18px 0;
+    color: var(--cinza);
+}
+
+.contato-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.contato-links a {
+    color: var(--texto);
+    text-decoration: none;
+    font-weight: 500;
+}
+    
 @media (max-width: 650px) {
     .barra {
         flex-direction: column;
@@ -526,6 +565,28 @@ footer {
     </div>
 </div>
 
+    <section class="contato">
+    <img src="imagens/pm34.jpg" alt="Paulo Mouras" class="contato-foto">
+
+    <h2>Contato</h2>
+
+    <p>
+        Para informações sobre obras, exposições e aquisições:
+    </p>
+
+    <div class="contato-links">
+        <a href="https://www.instagram.com/paulomouras" target="_blank">
+            @PAULOMOURAS
+        </a>
+
+        <span>•</span>
+
+        <a href="tel:+552198283598">
+            (21) 998283598
+        </a>
+    </div>
+</section>
+    
 <footer>
     Acervo Paulo Mouras · Todos os direitos reservados.
 </footer>
