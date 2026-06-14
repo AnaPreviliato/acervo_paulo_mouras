@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acervo Paulo Mouras</title>
+
+<style>
+:root {
+    --fundo: #f4f1ec;
+    --texto: #181818;
+    --card: #ffffff;
+    --cinza: #6f6f6f;
+    --linha: #dddddd;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--fundo);
+    color: var(--texto);
+}
+
+header {
+    background: #111;
+    color: white;
+    padding: 70px 28px 55px;
+    text-align: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: clamp(36px, 6vw, 72px);
+    letter-spacing: 1px;
+    font-weight: 600;
+}
+
+header p {
+    margin: 14px auto 0;
+    max-width: 760px;
+    font-size: 18px;
+    line-height: 1.5;
+    opacity: 0.82;
+}
+
+.barra {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(244, 241, 236, 0.94);
+    border-bottom: 1px solid var(--linha);
+    backdrop-filter: blur(8px);
+}
+
+.barra input,
+.barra select {
+    padding: 13px 16px;
+    border: 1px solid #c9c5bd;
+    border-radius: 999px;
+    background: white;
+    font-size: 15px;
+}
+
+.barra input {
+    width: min(520px, 58vw);
+}
+
+.contador {
+    text-align: center;
+    margin: 24px 0 0;
+    color: var(--cinza);
+    font-size: 14px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
+    gap: 28px;
+    padding: 34px;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+.card {
+    background: var(--card);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 34px rgba(0,0,0,0.16);
+}
+
+.imagem {
+    width: 100%;
+    height: 330px;
+    background: #e9e5dd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.imagem img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    cursor: zoom-in;
+}
+
+.conteudo {
+    padding: 20px 20px 22px;
+}
+
+.conteudo h2 {
+    margin: 0 0 14px;
+    font-size: 23px;
+    line-height: 1.15;
+}
+
+.conteudo p {
+    margin: 7px 0;
+    font-size: 14px;
+    line-height: 1.35;
+}
+
+.arquivo {
+    margin-top: 14px !important;
+    color: var(--cinza);
+    font-size: 12px !important;
+    word-break: break-word;
+}
+
+.sem-imagem {
+    color: #a40000;
+    text-align: center;
+    font-size: 13px;
+    padding: 20px;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 99;
+    background: rgba(0,0,0,.88);
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+.modal.ativo {
+    display: flex;
+}
+
+.modal-conteudo {
+    max-width: 92vw;
+    max-height: 86vh;
+    text-align: center;
+}
+
+.modal img {
+    max-width: 100%;
+    max-height: 80vh;
+    object-fit: contain;
+}
+
+.modal h3 {
+    color: white;
+    font-weight: 400;
+    margin: 14px 0 0;
+}
+
+.fechar {
+    position: fixed;
+    top: 20px;
+    right: 26px;
+    background: white;
+    border: none;
+    border-radius: 999px;
+    font-size: 24px;
+    width: 44px;
+    height: 44px;
+    cursor: pointer;
+}
+
+footer {
+    text-align: center;
+    color: var(--cinza);
+    padding: 40px 20px 60px;
+    font-size: 13px;
+}
+
+@media (max-width: 650px) {
+    .barra {
+        flex-direction: column;
+    }
+
+    .barra input,
+    .barra select {
+        width: 100%;
+    }
+
+    .grid {
+        padding: 18px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <h1>Acervo Paulo Mouras</h1>
+    <p>Portfólio dinâmico gerado automaticamente a partir do arquivo <strong>obras.csv</strong>.</p>
+</header>
+
+<section class="barra">
+    <input type="text" id="busca" placeholder="Buscar por título, técnica, suporte...">
+    <select id="ano">
+        <option value="">Todos os anos</option><option value="2021">2021</option><option value="2024">2024</option><option value="2025">2025</option><option value="2026">2026</option>
+    </select>
+</section>
+
+<div class="contador" id="contador">19 obras catalogadas</div>
+
+<main class="grid" id="galeria">
+    
+    <article class="card" data-ano="2021" data-busca="baixo oceano 2021 óleo impressão fine art 39 × 25 cm">
+        <div class="imagem">
+            <img src="imagens/Baixo_Oceano.jpeg" alt="Baixo Oceano" onclick="abrirModal('imagens/Baixo_Oceano.jpeg', 'Baixo Oceano')">
+        </div>
+        <div class="conteudo">
+            <h2>Baixo Oceano</h2>
+            <p><strong>Ano:</strong> 2021</p>
+            <p><strong>Técnica:</strong> Óleo</p>
+            <p><strong>Suporte:</strong> Impressão Fine Art</p>
+            <p><strong>Dimensões:</strong> 39 × 25 cm</p>
+            <p class="arquivo"><strong>Arquivo:</strong> Baixo_Oceano.jpg</p>
+        </div>
+    </article>
+    
+    <article class="card" data-ano="2025" data-busca="cavalo 2025 óleo tela 100 × 25 cm">
+        <div class="imagem">
+            <img src="imagens/Cavalo.jpeg" alt="Cavalo" onclick="abrirModal('imagens/Cavalo.jpeg', 'Cavalo')">
+        </div>
+        <div class="conteudo">
+            <h2>Cavalo</h2>
+            <p><strong>Ano:</strong> 2025</p>
+            <p><strong>Técnica:</strong> Óleo</p>
+            <p><strong>Suporte:</strong> Tela</p>
+            <p><strong>Dimensões:</strong> 100 × 25 cm</p>
+            <p class="arquivo"><strong>Arquivo:</strong> Cavalo.jpg</p>
+        </div>
+    </article>
+    
+    <article class="card" data-ano="2021" data-busca="é da gente que eles gostam sugar 2021 óleo canson a3 200g não informado">
+        <div class="imagem">
+            <img src="imagens/E_Da_Gente_Que_Eles_Gostam_Sugar.jpeg" alt="É da gente que eles gostam sugar" onclick="abrirModal('imagens/E_Da_Gente_Que_Eles_Gostam_Sugar.jpeg', 'É da gente que eles gostam sugar')">
+        </div>
+        <div class="conteudo">
+            <h2>É da gente que eles gostam sugar</h2>
+            <p><strong>Ano:</strong> 2021</p>
+            <p><strong>Técnica:</strong> Óleo</p>
+            <p><strong>Suporte:</strong> Canson A3 200g</p>
+            <p><strong>Dimensões:</strong> Não informado</p>
+            <p class="arquivo"><strong>Arquivo:</strong> E_Da_Gente_Que_Eles_Gostam_Sugar.jpg</p>
+        </div>
+    </article>
+    
+    <article class="card" data-ano="2025" data-busca="fugir das redes 2025 acrílica mdf 180 × 90 cm">
+        <div class="imagem">
+            <img src="imagens/Fugir_Das_Redes.jpg" alt="Fugir das Redes" onclick="abrirModal('imagens/Fugir_Das_Redes.jpg', 'Fugir das Redes')">
+        </div>
+        <div class="conteudo">
+            <h2>Fugir das Redes</h2>
+            <p><strong>Ano:</strong> 2025</p>
+            <p><strong>Técnica:</strong> Acrílica</p>
+            <p><strong>Suporte:</strong> MDF</p>
+            <p><strong>Dimensões:</strong> 180 × 90 cm</p>
+            <p class="arquivo"><strong>Arquivo:</strong> Fugir_Das_Redes.jpg</p>
+        </div>
+    </article>
+    
+    <article class="card" data-ano="2021" data-busca="intervenção têxtil (camisa) 2021 marcador para tecido camisa social peça única">
+        <div class="imagem">
+            <img src="imagens/Intervencao_Textil_Camisa.jpeg" alt="Intervenção Têxtil (Camisa)" onclick="abrirModal('imagens/Intervencao_Textil_Camisa.jpeg', 'Intervenção Têxtil (Camisa)')">
+        </div>
+        <div class="conteudo">
+            <h2>Intervenção Têxtil (Camisa)</h2>
+            <p><strong>Ano:</strong> 2021</p>
+            <p><strong>Técnica:</strong> Marcador para tecido</p>
+            <p><strong>Suporte:</strong> Camisa social</p>
+            <p><strong>Dimensões:</strong> Peça única</p>
+            <p class="arquivo"><strong>Arquivo:</strong> Intervencao_Textil_Camisa.jpg</p>
+        </div>
+    </article>
+    
+    <article class="card" data-ano="2025" data-busca="juntos 2025 óleo canson 21 × 29 cm">
+        <div class="imagem">
+            <img src="imagens/Juntos.jpg" alt="Juntos" onclick="abrirModal('imagens/Juntos.jpg', 'Juntos')">
+        </div>
+        <div class="conteudo">
+            <h2>Juntos</h2>
+            <p><strong>Ano:</strong> 2025</p>
+            <p><strong>Técnica:</strong> Óleo</p>
+            <p><strong>Suporte:</strong> Canson</p>
+            <p><strong>Dimensões:</strong> 21 × 29 cm</p>
+            <p class="arquivo"><strong>Arquivo:</strong> Juntos.jpg</p>
+        </div>
+    </article>
+    
+    <article class="card" data-ano="2025" data-busca="luna, guardiã 2025 óleo tela 100 × 80 cm">
+        <div class="imagem">
+            <img src="imagens/Luna_Guardia.jpg" alt="Luna, Guardiã" onclick="abrirModal('imagens/Luna_Guardia.jpg', 'Luna, Guardiã')">
+        </div>
+        <div class="conteudo">
+            <h2>Luna, Guardiã</h2>
+            <p><strong>Ano:</strong> 2025</p>
+            <p><strong>Técnica:</strong> Óleo</p>
+            <p><strong>Suporte:</strong> Tela</p>
+            <p><strong>Dimensões:</strong> 100 × 80 cm</p>
+            <p class="arquivo"><strong>Arquivo:</strong> Luna_Guardia.jpg</p>
+        </div>
+    </article>
+    
+    <article class="card" data-ano="2025" data-busca="mais passado que presente 2025 óleo tela 65 × 55 cm">
+        <div class="imagem">
+            <img src="imagens/Mais_Passado_Que_Presente.jpg" alt="Mais Passado que Presente" onclick="abrirModal('imagens/Mais_Passado_Que_Presente.jpg', 'Mais Passado que Presente')">
+        </div>
+        <div class="conteudo">
+            <h2>Mais Passado que Presente</h2>
+            <p><strong>Ano:</strong> 2025</p>
+            <p><strong>Técnica:</strong> Óleo</p>
+            <p><strong>Suporte:</strong> Tela</p>
+            <p><strong>Dimensões:</strong> 65 × 55 cm</p>
+            <p class="arquivo"><strong>Arquivo:</strong> Mais_Passado_Que_Presente.jpg</p>
+        </div>
+    </article>
+    
+    <article class="card" data-ano="2025" data-busca="metamorfose de laços 2025 óleo canson 21 × 29 cm">
+        <div class="imagem">
+            <img src="imagens/Metamorfose_De_Lacos.jpg" alt="Metamorfose de Laços" onclick="abrirModal('imagens/Metamorfose_De_Lacos.jpg', 'Metamorfose de Laços')">
+        </div>
+        <div class="conteudo">
+            <h2>Metamorfose de Laços</h2>
+            <p><strong>Ano:</strong> 2025</p>
+            <p><strong>Técnica:</strong> Óleo</p>
+            <p><strong>Suporte:</strong> Canson</p>
+            <p><strong>Dimensões:</strong> 21 × 29 cm</p>
+            <p class="arquivo"><strong>Arquivo:</strong> Metamorfose_De_Lacos.jpg</p>
+        </div>
+    </article>
+    
+    <article class="card" data-ano="2025" data-busca="mistérios da carne 2025 aquarela canson a4 300g não informado">
+        <div class="imagem">
+            <img src="imagens/Misterios_Da_Carne.jpeg" alt="Mistérios da Carne" onclick="abrirModal('imagens/Misterios_Da_Carne.jpeg', 'Mistérios da Carne')">
+        </div>
+        <div class="conteudo">
+            <h2>Mistérios da Carne</h2>
+            <p><strong>Ano:</strong> 2025</p>
+            <p><strong>Técnica:</strong> Aquarela</p>
+            <p><strong>Suporte:</strong> Canson A4 300g</p>
+            <p><strong>Dimensões:</strong> Não informado</p>
+            <p class="arquivo"><strong>Arquivo:</strong> Misterios_Da_Carne.jpg</p>
+        </div>
+    </article>
+    
+    <article class="card" data-ano="2025" data-busca="muita coisa na mesa 2025 óleo mdf 59 × 31 cm">
+        <div class="imagem">
+            <img src="imagens/Muita_Coisa_Na_Mesa.jpg" alt="Muita Coisa na Mesa" onclick="abrirModal('imagens/Muita_Coisa_Na_Mesa.jpg', 'Muita Coisa na Mesa')">
+        </div>
+        <div class="conteudo">
+            <h2>Muita Coisa na Mesa</h2>
+            <p><strong>Ano:</strong> 2025</p>
+            <p><strong>Técnica:</strong> Óleo</p>
+            <p><strong>Suporte:</strong> MDF</p>
+            <p><strong>Dimensões:</strong> 59 × 31 cm</p>
+            <p class="arquivo"><strong>Arquivo:</strong> Muita_Coisa_Na_Mesa.jpg</p>
+        </div>
+    </article>
+    
+    <article class="card" data-ano="2021" data-busca="não boto minha mão no fogo 2021 óleo tela 90 × 60 cm">
+        <div class="imagem">
+            <img src="imagens/Nao_Boto_Minha_Mao_No_Fogo.jpeg" alt="Não boto minha mão no fogo" onclick="abrirModal('imagens/Nao_Boto_Minha_Mao_No_Fogo.jpeg', 'Não boto minha mão no fogo')">
+        </div>
+        <div class="conteudo">
+            <h2>Não boto minha mão no fogo</h2>
+            <p><strong>Ano:</strong> 2021</p>
+            <p><strong>Técnica:</strong> Óleo</p>
+            <p><strong>Suporte:</strong> Tela</p>
+            <p><strong>Dimensões:</strong> 90 × 60 cm</p>
+            <p class="arquivo"><strong>Arquivo:</strong> Nao_Boto_Minha_Mao_No_Fogo.jpg</p>
+        </div>
+    </article>
+    
+    <article class="card" data-ano="2021" data-busca="nem o pé 2021 óleo canson a3 200g 29 × 42 cm">
+        <div class="imagem">
+            <img src="imagens/Nem_O_Pe.jpeg" alt="Nem o pé" onclick="abrirModal('imagens/Nem_O_Pe.jpeg', 'Nem o pé')">
+        </div>
+        <div class="conteudo">
+            <h2>Nem o pé</h2>
+            <p><strong>Ano:</strong> 2021</p>
+            <p><strong>Técnica:</strong> Óleo</p>
+            <p><strong>Suporte:</strong> Canson A3 200g</p>
+            <p><strong>Dimensões:</strong> 29 × 42 cm</p>
+            <p class="arquivo"><strong>Arquivo:</strong> Nem_O_Pe.jpg</p>
+        </div>
+    </article>
+    
+    <article class="card" data-ano="2021" data-busca="no mesmo barco 2021 óleo canson 200g 42 × 29 cm">
+        <div class="imagem">
+            <img src="imagens/No_Mesmo_Barco.jpeg" alt="No mesmo barco" onclick="abrirModal('imagens/No_Mesmo_Barco.jpeg', 'No mesmo barco')">
+        </div>
+        <div class="conteudo">
+            <h2>No mesmo barco</h2>
+            <p><strong>Ano:</strong> 2021</p>
+            <p><strong>Técnica:</strong> Óleo</p>
+            <p><strong>Suporte:</strong> Canson 200g</p>
+            <p><strong>Dimensões:</strong> 42 × 29 cm</p>
+            <p class="arquivo"><strong>Arquivo:</strong> No_Mesmo_Barco.jpg</p>
+        </div>
+    </article>
+    
+    <article class="card" data-ano="2026" data-busca="sábado 2026 aquarela canson 21 × 29 cm">
+        <div class="imagem">
+            <img src="imagens/Sabado.jpg" alt="Sábado" onclick="abrirModal('imagens/Sabado.jpg', 'Sábado')">
+        </div>
+        <div class="conteudo">
+            <h2>Sábado</h2>
+            <p><strong>Ano:</strong> 2026</p>
+            <p><strong>Técnica:</strong> Aquarela</p>
+            <p><strong>Suporte:</strong> Canson</p>
+            <p><strong>Dimensões:</strong> 21 × 29 cm</p>
+            <p class="arquivo"><strong>Arquivo:</strong> Sabado.jpg</p>
+        </div>
+    </article>
+    
+    <article class="card" data-ano="2026" data-busca="sem título (em produção) 2026 óleo tela 120 × 100 cm">
+        <div class="imagem">
+            <img src="imagens/Sem_Titulo_Em_Producao.jpg" alt="Sem Título (Em Produção)" onclick="abrirModal('imagens/Sem_Titulo_Em_Producao.jpg', 'Sem Título (Em Produção)')">
+        </div>
+        <div class="conteudo">
+            <h2>Sem Título (Em Produção)</h2>
+            <p><strong>Ano:</strong> 2026</p>
+            <p><strong>Técnica:</strong> Óleo</p>
+            <p><strong>Suporte:</strong> Tela</p>
+            <p><strong>Dimensões:</strong> 120 × 100 cm</p>
+            <p class="arquivo"><strong>Arquivo:</strong> Sem_Titulo_Em_Producao.jpg</p>
+        </div>
+    </article>
+    
+    <article class="card" data-ano="2025" data-busca="símbolos e medalhas 2025 óleo tela 156 × 69 cm">
+        <div class="imagem">
+            <img src="imagens/Simbolos_E_Medalhas.jpeg" alt="Símbolos e Medalhas" onclick="abrirModal('imagens/Simbolos_E_Medalhas.jpeg', 'Símbolos e Medalhas')">
+        </div>
+        <div class="conteudo">
+            <h2>Símbolos e Medalhas</h2>
+            <p><strong>Ano:</strong> 2025</p>
+            <p><strong>Técnica:</strong> Óleo</p>
+            <p><strong>Suporte:</strong> Tela</p>
+            <p><strong>Dimensões:</strong> 156 × 69 cm</p>
+            <p class="arquivo"><strong>Arquivo:</strong> Simbolos_E_Medalhas.jpg</p>
+        </div>
+    </article>
+    
+    <article class="card" data-ano="2025" data-busca="superfícies jogadas 2025 óleo tela 100 × 60 cm">
+        <div class="imagem">
+            <img src="imagens/Superficies_Jogadas.jpeg" alt="Superfícies Jogadas" onclick="abrirModal('imagens/Superficies_Jogadas.jpeg', 'Superfícies Jogadas')">
+        </div>
+        <div class="conteudo">
+            <h2>Superfícies Jogadas</h2>
+            <p><strong>Ano:</strong> 2025</p>
+            <p><strong>Técnica:</strong> Óleo</p>
+            <p><strong>Suporte:</strong> Tela</p>
+            <p><strong>Dimensões:</strong> 100 × 60 cm</p>
+            <p class="arquivo"><strong>Arquivo:</strong> Superficies_Jogadas.jpg</p>
+        </div>
+    </article>
+    
+    <article class="card" data-ano="2024" data-busca="travas 2024 óleo canson a3 200g 42 × 29 cm">
+        <div class="imagem">
+            <img src="imagens/Travas.jpeg" alt="Travas" onclick="abrirModal('imagens/Travas.jpeg', 'Travas')">
+        </div>
+        <div class="conteudo">
+            <h2>Travas</h2>
+            <p><strong>Ano:</strong> 2024</p>
+            <p><strong>Técnica:</strong> Óleo</p>
+            <p><strong>Suporte:</strong> Canson A3 200g</p>
+            <p><strong>Dimensões:</strong> 42 × 29 cm</p>
+            <p class="arquivo"><strong>Arquivo:</strong> Travas.jpg</p>
+        </div>
+    </article>
+    
+</main>
+
+<div class="modal" id="modal" onclick="fecharModal()">
+    <button class="fechar" onclick="fecharModal()">×</button>
+    <div class="modal-conteudo" onclick="event.stopPropagation()">
+        <img id="modalImg" src="">
+        <h3 id="modalTitulo"></h3>
+    </div>
+</div>
+
+<footer>
+    Acervo Paulo Mouras · HTML gerado por Python
+</footer>
+
+<script>
+const busca = document.getElementById("busca");
+const filtroAno = document.getElementById("ano");
+const cards = document.querySelectorAll(".card");
+const contador = document.getElementById("contador");
+
+function filtrar() {
+    const termo = busca.value.toLowerCase();
+    const ano = filtroAno.value;
+    let visiveis = 0;
+
+    cards.forEach(card => {
+        const texto = card.dataset.busca;
+        const anoCard = card.dataset.ano;
+
+        const combinaBusca = texto.includes(termo);
+        const combinaAno = !ano || anoCard === ano;
+
+        if (combinaBusca && combinaAno) {
+            card.style.display = "block";
+            visiveis++;
+        } else {
+            card.style.display = "none";
+        }
+    });
+
+    contador.textContent = visiveis + " obra(s) exibida(s)";
+}
+
+busca.addEventListener("input", filtrar);
+filtroAno.addEventListener("change", filtrar);
+
+function abrirModal(src, titulo) {
+    document.getElementById("modalImg").src = src;
+    document.getElementById("modalTitulo").textContent = titulo;
+    document.getElementById("modal").classList.add("ativo");
+}
+
+function fecharModal() {
+    document.getElementById("modal").classList.remove("ativo");
+}
+</script>
+
+</body>
+</html>
